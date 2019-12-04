@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 app.get('/', (request, response) => {
-  response.send('We\'re going to test all the routes!');
+  response.send('Welcome to Color Picker API');
 });
 
 export default app;
