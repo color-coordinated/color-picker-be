@@ -53,6 +53,25 @@ app.get('/api/v1/palettes/:palette_name', (req, resp) => {
       }
     })
     .catch((err) => resp.status(500).json({ err }));
-})
+});
+
+app.post('/api/v1/projects', (req, resp) => {
+  const receivedData = req.body;
+  if(!receivedData.name) {
+    return resp.status(422).json({ error: `Expected format { name: <string> }, missing name!`});
+  }
+  database('projects')
+    .where({ name: receivedData.name })
+    .then((projects) => {
+      if(projects.length) {
+        return resp.status(422).json({ error: 'Project with that name alrady exists!' });
+      }
+      database('projects').insert(receivedData, 'id')
+      .then((data) => {
+        resp.status(201).json({ id: data[0] });
+      })
+    })
+    .catch((err) => resp.status(500).json({ err }));
+});
 
 export default app;
