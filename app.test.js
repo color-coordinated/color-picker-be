@@ -106,6 +106,7 @@ describe('Server', () => {
       const project = await database('palettes').where({ palette_name: 'test palette' }).first();
       expect(response.status).toBe(201);
       expect(project.palette_name).toEqual(newPalette.palette_name);
+      await database('palettes').where({ palette_name: 'test palette' }).del();
     });
 
     it('should return status 422 and a helpful error msg', async () => {
