@@ -9,9 +9,15 @@ app.locals.title = 'Color Picker Backend';
 app.use(cors());
 app.use(express.json());
 
-
 app.get('/', (request, response) => {
   response.send('Welcome to Color Picker API');
 });
+
+app.get('/api/v1/projects', (req, resp) => {
+  database('projects')
+    .select()
+    .then((projects) => resp.status(200).json(projects))
+    .catch((err) => resp.status(500).json({ err }));
+})
 
 export default app;
