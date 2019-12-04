@@ -74,28 +74,19 @@ describe('Server', () => {
   });
 
   describe('POST /api/v1/projects', () => {
-    it.skip('should return status 201 and insert a new project', async () => {
+    it('should return status 201 and insert a new project', async () => {
       const newProject = { name: 'Cool new project' };
+      await database('projects').where(newProject).del();
       const response = await request(app).post('/api/v1/projects').send(newProject);
       const project = await database('projects').where('name', 'Cool new project').first();
       expect(response.status).toBe(201);
       expect(newProject.name).toEqual(project.name);
     });
-    it.skip('should return status 422 and a helpful error msg if missing info', async () => {
+    it('should return status 422 and a helpful error msg if missing info', async () => {
       const invalidProject = { color: 'red' };
+      const expectedResponse = {"error": "Expected format { name: <string> }, missing name!"};
       const response = await request(app).post('/api/v1/projects').send(invalidProject);
-      expect(response).toEqual('something');
+      expect(response.body).toEqual(expectedResponse);
     });
   });
-
-  // describe('POST /api/v1/students', () => {
-  //   it('should return a 201 status and add a new student to the db', async () => {
-  //     const newStudent = { lastname: 'Bridges', program: 'FE', enrolled: true }
-  //     const response = await request(app).post('/api/v1/students').send(newStudent);
-  //     const students = await database('students').where('id', response.body.id).select();
-  //     const student = students[0];
-  //     expect(response.status).toBe(201);
-  //     expect(student.lastname).toEqual(newStudent.lastname);
-  //   });
-  // });
 }); 
