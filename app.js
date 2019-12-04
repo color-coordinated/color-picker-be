@@ -109,4 +109,13 @@ app.delete('/api/v1/palettes/:palette_name', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
+app.patch('/api/v1/projects/:name', (request, response) => {
+  const { name } = request.params;
+  database('projects').where({ name }).update({
+    name: request.body.name
+  })
+  .then(() => response.status(202).json({ message: `Project name changed to ${request.body.name}`}))
+  .catch((error) => response.status(500).json({ error }))
+})
+
 export default app;
