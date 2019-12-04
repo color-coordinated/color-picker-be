@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watchAll",
     "start": "nodemon --exec babel-node server.js"
   },
   "keywords": [],
@@ -13,12 +13,18 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "jest": "^24.9.0",
     "knex": "^0.20.3",
-    "pg": "^7.14.0"
+    "pg": "^7.14.0",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.7.4",
     "@babel/node": "^7.7.4",
-    "@babel/preset-env": "^7.7.4"
+    "@babel/polyfill": "^7.7.0",
+    "@babel/preset-env": "^7.7.4",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^24.9.0",
+    "nodemon": "^2.0.1"
   }
 }

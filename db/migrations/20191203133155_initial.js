@@ -10,7 +10,7 @@ exports.up = function(knex) {
     knex.schema.createTable('palettes', (table) => {
       table.increments('id').primary();
       table.integer('project_id').unsigned();
-      table.foreign('project_id').references('projects.id');
+      table.foreign('project_id').references('projects.id').onDelete('CASCADE')
       table.string('palette_name');
       table.string('color_1');
       table.string('color_2');
