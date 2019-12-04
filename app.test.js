@@ -38,12 +38,49 @@ describe('Server', () => {
   describe('GET /api/v1/projects/:name', () => {
     it('should return the project with status 200 if found', async () => {
       let expectedProject = await database('projects').where('name', 'Super dope project').first();
-      console.log(JSON.stringify(expectedProject.created_at));
       const { name } = expectedProject;
       const resp = await request(app).get(`/api/v1/projects/${name}`);
       const project = await resp.body[0];
       expect(resp.status).toBe(200);
       expect(project.name).toEqual(expectedProject.name);
+    });
+    it('should return 404 and an error is the project is not found', async () => {
+      const invalidPalette = 'invalid palette';
+      const expected = '<!DOCTYPE html>\n' +
+      '<html lang="en">\n' +
+      '<head>\n' +
+      '<meta charset="utf-8">\n' +
+      '<title>Error</title>\n' +
+      '</head>\n' +
+      '<body>\n' +
+      '<pre>Cannot GET /api/v1/palettes/invalid%20palette</pre>\n' +
+      '</body>\n' +
+      '</html>\n';
+      const resp = await request(app).get(`/api/v1/palettes/${invalidPalette}`);
+      const error = await resp.text;
+      expect(resp.status).toBe(404);
+      expect(error).toEqual(expected);
+    });
+  });
+
+  describe('GET /api/v1/palettes/:palette_name', () => {
+    it('should return status 200 and the palette found', async () => {
+      const palette_name = 'super dope palette';
+      const expectedPalette = await database('palettes').where({ palette_name }).first();
+      const resp = await request(app).get(`/api/v1/projects/${palette_name}`);
+      const palette = resp.body[0];
+      console.log(palette);
+      // expect(resp.status).toBe(200);
+      // expect(palette).toEqual(expectedPalette);
+    });
+    it('should return status 404 is palette is not found and a message', async () => {
+      const expected = '';
+      const invalidPalette = 'invalid palette';
+      const resp = await request(app).get(`/api/v1/palettes/${invalidPalette}`);
+      const error = resp.text;
+      console.log(resp);
+      // expect(resp.status).toBe(404);
+      // expect(error).toEqual(expected);
     });
   });
 }); 
