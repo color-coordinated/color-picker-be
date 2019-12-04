@@ -27,4 +27,18 @@ app.get('/api/v1/palettes', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
+app.get('/api/v1/projects/:name', (req, resp) => {
+  const { name } = req.params;
+  database('projects')
+    .where({ name })
+    .then((project) => {
+      if(project.length) {
+        resp.status(200).json(project)
+      } else {
+        resp.status(404).json({ error: `Could not find project named ${name}!`})
+      }
+    })
+    .catch((err) => resp.status(500).json({ err }));
+});
+
 export default app;
