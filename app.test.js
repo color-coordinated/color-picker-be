@@ -80,12 +80,46 @@ describe('Server', () => {
       const response = await request(app).post('/api/v1/projects').send(newProject);
       const project = await database('projects').where('name', 'Cool new project').first();
       expect(response.status).toBe(201);
-      expect(newProject.name).toEqual(project.name);
+      expect(project.name).toEqual(newProject.name);
     });
     it('should return status 422 and a helpful error msg if missing info', async () => {
       const invalidProject = { color: 'red' };
       const expectedResponse = {"error": "Expected format { name: <string> }, missing name!"};
       const response = await request(app).post('/api/v1/projects').send(invalidProject);
+      expect(response.body).toEqual(expectedResponse);
+    });
+  });
+
+  describe('POST /api/v1/palettes', () => {
+    it.skip('should return a status of 201 and insert new palette into table', async () => {
+      const newPalette = { 
+        palette_name: 'test palette',
+        project_id: 1,
+        color_1: '#000000',
+        color_2: '#FFFFFF',
+        color_3: '#CCCCCC',
+        color_4: '#1F1F1F',
+        color_5: '#1E1E1E',
+      };
+      await database('palettes').where({ palette_name: 'test palette' }).del();
+      const response = await request(app).post('/api/v1/palettes').send(newPalette);
+      const project = await database('palettes').where({ palette_name: 'test palette' }).first();
+      expect(response.status).toBe(201);
+      expect(project.palette_name).toEqual(newPalette.palette_name);
+    });
+
+    it.skip('should return status 422 and a helpful error msg', async () => {
+      const invalidPalette = {
+        palette_name: 'test palette',
+        project_id: 1,
+        color_1: '#000000',
+        color_2: '#FFFFFF',
+        color_3: '#CCCCCC',
+        color_4: '#1F1F1F',
+      };
+      const expectedResponse = {};
+      const response = await request(app).post('/api/v1/palettes').send(invalidPalette);
+      expect(response.status).toBe(422);
       expect(response.body).toEqual(expectedResponse);
     });
   });
