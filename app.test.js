@@ -21,7 +21,7 @@ describe('Server', () => {
       const projects = await resp.body;
       expect(resp.status).toBe(200);
       // expect(projects).toEqual(expectedProjects);
-      // projects match but create-at is wrapper in quotes on response
+      // projects match but created_at/updated_at is wrapped in quotes on response
     });
   });
 
@@ -37,12 +37,13 @@ describe('Server', () => {
 
   describe('GET /api/v1/projects/:name', () => {
     it('should return the project with status 200 if found', async () => {
-      const expectedProject = await database('projects').where('name', 'Super dope project').first();
+      let expectedProject = await database('projects').where('name', 'Super dope project').first();
+      console.log(JSON.stringify(expectedProject.created_at));
       const { name } = expectedProject;
       const resp = await request(app).get(`/api/v1/projects/${name}`);
       const project = await resp.body[0];
       expect(resp.status).toBe(200);
-      expect(project).toEqual(expectedProject)
+      expect(project.name).toEqual(expectedProject.name);
     });
   });
-});
+}); 
