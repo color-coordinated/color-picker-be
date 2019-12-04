@@ -90,4 +90,22 @@ app.post('/api/v1/palettes', (req, resp) => {
   .catch((err) => resp.status(500).json({ err }));
 });
 
+app.delete('/api/v1/projects/:name', (req, resp) => {
+  const { name } = req.params;
+  database('projects')
+    .where({ name })
+    .del()
+    .then(() => resp.status(202).json({ message: `Successfully deleted ${name}`}))
+    .catch((err) => resp.status(500).json({ err }));
+});
+
+app.delete('/api/v1/palettes/:palette_name', (req, resp) => {
+  const { palette_name } = req.params;
+  database('palettes')
+    .where({ palette_name })
+    .del()
+    .then(() => resp.status(202).json({ message: `Successfully deleted palette ${palette_name}`}))
+    .catch((err) => resp.status(500).json({ err }));
+});
+
 export default app;
