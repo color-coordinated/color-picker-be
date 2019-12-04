@@ -34,4 +34,15 @@ describe('Server', () => {
       expect(palettes).toEqual(expectedPalettes);
     });
   });
+
+  describe('GET /api/v1/projects/:name', () => {
+    it('should return the project with status 200 if found', async () => {
+      const expectedProject = await database('projects').where('name', 'Super dope project').first();
+      const { name } = expectedProject;
+      const resp = await request(app).get(`/api/v1/projects/${name}`);
+      const project = await resp.body[0];
+      expect(resp.status).toBe(200);
+      expect(project).toEqual(expectedProject)
+    });
+  });
 });
