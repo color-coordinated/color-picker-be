@@ -33,12 +33,26 @@ app.get('/api/v1/projects/:name', (req, resp) => {
     .where({ name })
     .then((project) => {
       if(project.length) {
-        resp.status(200).json(project)
+        resp.status(200).json(project[0])
       } else {
         resp.status(404).json({ error: `Could not find project named ${name}!`})
       }
     })
     .catch((err) => resp.status(500).json({ err }));
 });
+
+app.get('/api/v1/palettes/:palette_name', (req, resp) => {
+  const { palette_name } = req.params;
+  database('palettes')
+    .where({ palette_name })
+    .then((palette) => {
+      if(palette.length) {
+        resp.status(200).json(palette[0]);
+      } else {
+        resp.status(404).json({ error: `Could not find palette with name ${palette_name}` });
+      }
+    })
+    .catch((err) => resp.status(500).json({ err }));
+})
 
 export default app;
