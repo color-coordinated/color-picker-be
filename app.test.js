@@ -1,6 +1,7 @@
-import "@babel/polyfill";
+import '@babel/polyfill';
 import request from 'supertest';
 import app from './app';
+
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
@@ -37,7 +38,7 @@ describe('Server', () => {
 
   describe('GET /api/v1/projects/:name', () => {
     it('should return the project with status 200 if found', async () => {
-      let expectedProject = await database('projects').where('name', 'Super dope project').first();
+      const expectedProject = await database('projects').where('name', 'Super dope project').first();
       const { name } = expectedProject;
       const resp = await request(app).get(`/api/v1/projects/${name}`);
       const project = await resp.body;
@@ -46,7 +47,7 @@ describe('Server', () => {
     });
     it('should return 404 and an error is the project is not found', async () => {
       const invalidPalette = 'invalid project';
-      const expected = JSON.stringify({ error: 'Could not find project named invalid project!'});
+      const expected = JSON.stringify({ error: 'Could not find project named invalid project!' });
       const resp = await request(app).get(`/api/v1/projects/${invalidPalette}`);
       const error = await resp.text;
       expect(resp.status).toBe(404);
@@ -58,7 +59,7 @@ describe('Server', () => {
     it('should return status 200 and the palette found', async () => {
       const palette_name = 'super dope palette';
       const expectedPalette = await database('palettes').where({ palette_name }).first();
-      const resp = await request(app).get(`/api/v1/palettes/${palette_name}`); 
+      const resp = await request(app).get(`/api/v1/palettes/${palette_name}`);
       const palette = resp.body;
       expect(resp.status).toBe(200);
       expect(palette).toEqual(expectedPalette);
@@ -84,7 +85,7 @@ describe('Server', () => {
     });
     it('should return status 422 and a helpful error msg if missing info', async () => {
       const invalidProject = { color: 'red' };
-      const expectedResponse = {"error": "Expected format { name: <string> }, missing name!"};
+      const expectedResponse = { error: 'Expected format { name: <string> }, missing name!' };
       const response = await request(app).post('/api/v1/projects').send(invalidProject);
       expect(response.body).toEqual(expectedResponse);
     });
@@ -92,7 +93,7 @@ describe('Server', () => {
 
   describe('POST /api/v1/palettes', () => {
     it('should return a status of 201 and insert new palette into table', async () => {
-      const newPalette = { 
+      const newPalette = {
         palette_name: 'test palette',
         project_id: 1,
         color_1: '#000000',
@@ -119,9 +120,9 @@ describe('Server', () => {
         color_4: '#1F1F1F',
       };
       const expectedResponse = {
-        error: 'Expected { project_id: <int>, palette_name: <string>, color_1: <string>, color_2: <string> color_3: <string>, color_4: <string>, color_5: <string> } \n' +
-          '        Missing color_5!'
-      }
+        error: 'Expected { project_id: <int>, palette_name: <string>, color_1: <string>, color_2: <string> color_3: <string>, color_4: <string>, color_5: <string> } \n'
+        + '        Missing color_5!',
+      };
       const response = await request(app).post('/api/v1/palettes').send(invalidPalette);
       expect(response.status).toBe(422);
       expect(response.body).toEqual(expectedResponse);
@@ -131,8 +132,8 @@ describe('Server', () => {
   describe('DELETE /api/v1/projects/:name', () => {
     it('should return status 202 and delete the project', async () => {
       const response = await request(app).delete('/api/v1/projects/Cool new project');
-      const expected = { message : "Successfully deleted Cool new project" }
-      const project = await database('projects').where({ name: 'Cool new project'});
+      const expected = { message: 'Successfully deleted Cool new project' };
+      const project = await database('projects').where({ name: 'Cool new project' });
       expect(response.body).toEqual(expected);
       expect(project).toEqual([]);
     });
@@ -141,7 +142,7 @@ describe('Server', () => {
   describe('DELETE /api/v1/palettes/:palette_name', () => {
     it('should return status 202 and delete the item', async () => {
       const response = await request(app).delete('/api/v1/palettes/super dope palette');
-      const expected = { message: "Successfully deleted palette super dope palette" };
+      const expected = { message: 'Successfully deleted palette super dope palette' };
       const palette = await database('palettes').where({ palette_name: 'super dope palette' });
       expect(response.body).toEqual(expected);
       expect(palette).toEqual([]);
@@ -156,4 +157,4 @@ describe('Server', () => {
       });
     });
   });
-}); 
+});
