@@ -91,7 +91,7 @@ describe('Server', () => {
   });
 
   describe('POST /api/v1/palettes', () => {
-    it.skip('should return a status of 201 and insert new palette into table', async () => {
+    it('should return a status of 201 and insert new palette into table', async () => {
       const newPalette = { 
         palette_name: 'test palette',
         project_id: 1,
@@ -108,7 +108,7 @@ describe('Server', () => {
       expect(project.palette_name).toEqual(newPalette.palette_name);
     });
 
-    it.skip('should return status 422 and a helpful error msg', async () => {
+    it('should return status 422 and a helpful error msg', async () => {
       const invalidPalette = {
         palette_name: 'test palette',
         project_id: 1,
@@ -117,10 +117,42 @@ describe('Server', () => {
         color_3: '#CCCCCC',
         color_4: '#1F1F1F',
       };
-      const expectedResponse = {};
+      const expectedResponse = {
+        error: 'Expected { project_id: <int>, palette_name: <string>, color_1: <string>, color_2: <string> color_3: <string>, color_4: <string>, color_5: <string> } \n' +
+          '        Missing color_5!'
+      }
       const response = await request(app).post('/api/v1/palettes').send(invalidPalette);
       expect(response.status).toBe(422);
       expect(response.body).toEqual(expectedResponse);
+    });
+  });
+
+  describe('DELETE /api/v1/projects/:name', () => {
+    it('should return status 202 and delete the project', async () => {
+      const response = await request(app).delete('/api/v1/projects/Cool new project');
+      const expected = { message : "Successfully deleted Cool new project" }
+      const project = await database('projects').where({ name: 'Cool new project'});
+      expect(response.body).toEqual(expected);
+      expect(project).toEqual([]);
+    });
+  });
+
+  describe('DELETE /api/v1/palettes/:palette_name', () => {
+    it('should return status 202 and delete the item', async () => {
+      const response = await request(app).delete('/api/v1/palettes/super dope palette');
+      const expected = { message: "Successfully deleted palette super dope palette" };
+      const palette = await database('palettes').where({ palette_name: 'super dope palette' });
+      expect(response.body).toEqual(expected);
+      expect(palette).toEqual([]);
+      await database('palettes').insert({
+        palette_name: 'super dope palette',
+        project_id: 1,
+        color_1: '#000000',
+        color_2: '#FFFFFF',
+        color_3: '#CCCCCC',
+        color_4: '#1f1f1f',
+        color_5: '#1d1d1d',
+      });
     });
   });
 }); 
