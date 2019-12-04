@@ -111,10 +111,16 @@ app.delete('/api/v1/palettes/:palette_name', (req, resp) => {
 
 app.patch('/api/v1/projects/:name', (request, response) => {
   const { name } = request.params;
-  database('projects').where({ name }).update({
-    name: request.body.name
-  })
-  .then(() => response.status(202).json({ message: `Project name changed to ${request.body.name}`}))
+  database('projects').where({ name })
+    .then(project => {
+      if (!project.length) {
+        return response.status(404).json({ error: `No existing project with ${name}`})
+      }
+      database('projects').where({ name }).update({
+        name: request.body.name
+      })
+    .then(() => response.status(202).json({ message: `Project name changed to ${request.body.name}`}))
+    })
   .catch((error) => response.status(500).json({ error }))
 })
 

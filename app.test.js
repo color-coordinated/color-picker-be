@@ -160,4 +160,17 @@ describe('Server', () => {
       });
     });
   });
+
+  describe('PATCH /api/v1/projects/:name', () => {
+    it('should return a 202 status and update the item', async () => {
+      const newName = { name: 'hi'}
+      const originalProject = await database('projects').where({ name: 'Super dope project'}).first()
+      expect(originalProject.name).toEqual('Super dope project')
+      const update = await request(app).patch(`/api/v1/projects/${originalProject.name}`).send(newName)
+      const updatedProject = await database('projects').where({name: 'hi'}).first()
+      expect(updatedProject.name).toEqual('hi')
+      expect(update.status).toBe(202)
+      expect(update.body.message).toEqual('Project name changed to hi')
+    })
+  })
 });
