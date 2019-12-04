@@ -74,4 +74,20 @@ app.post('/api/v1/projects', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
+app.post('/api/v1/palettes', (req, resp) => {
+  const receivedData = req.body;
+  for( let requiredParam of ['project_id', 'palette_name', 'color_1', 'color_2', 'color_3', 'color_4', 'color_5']) {
+    if(!receivedData[requiredParam]) {
+      return resp.status(422).json({ 
+        error: `Expected { project_id: <int>, palette_name: <string>, color_1: <string>, color_2: <string> color_3: <string>, color_4: <string>, color_5: <string> } 
+        Missing ${requiredParam}!`
+      })
+    }
+  }
+  database('palettes')
+  .insert(receivedData, 'id')
+  .then((newPalette) => resp.status(201).json({ id: newPalette[0] }))
+  .catch((err) => resp.status(500).json({ err }));
+});
+
 export default app;
