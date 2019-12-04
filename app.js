@@ -18,6 +18,13 @@ app.get('/api/v1/projects', (req, resp) => {
     .select()
     .then((projects) => resp.status(200).json(projects))
     .catch((err) => resp.status(500).json({ err }));
-})
+});
+
+app.get('/api/v1/palettes', (req, resp) => {
+  database('palettes')
+    .select()
+    .then((palettes) => resp.status(200).json(palettes))
+    .catch((err) => resp.status(500).json({ err }));
+});
 
 export default app;
