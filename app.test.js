@@ -181,7 +181,7 @@ describe('Server', () => {
       const originalPalette = await database('palettes').where({ palette_name: 'super dope palette'}).first()
       console.log('orig', originalPalette)
       expect(originalPalette.palette_name).toEqual('super dope palette')
-      const update = await request(app).patch(`/api/v1/palettes/${originalPalette.name}`).send(newColor)
+      const update = await request(app).patch(`/api/v1/palettes/${originalPalette.palette_name}`).send(newColor)
       // console.log('update', update)
       const updatedPalette = await database('palettes').where({palette_name: 'super dope palette'}).first()
       console.log('updated palette', updatedPalette)
