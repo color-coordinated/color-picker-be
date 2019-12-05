@@ -54,23 +54,15 @@ describe('Server', () => {
         
         expect(response.status).toBe(200)
         expect(project.name).toEqual(expectedProject.name)
-
-
-      // const expectedProject = await database('projects').where('id', 1).first();
-      // const { name, id } = expectedProject;
-      // const resp = await request(app).get(`/api/v1/projects/${id}`);
-      // const project = await resp.body;
-      // expect(resp.status).toBe(200);
-      // expect(project.name).toEqual(expectedProject.name);
     });
 
-    it.skip('should return 404 and an error is the project is not found', async () => {
-      const invalidPalette = 'invalid project';
-      const expected = JSON.stringify({ error: 'Could not find project named invalid project!' });
-      const resp = await request(app).get(`/api/v1/projects/${invalidPalette}`);
-      const error = await resp.text;
-      expect(resp.status).toBe(404);
-      expect(error).toEqual(expected);
+    it('should return 404 and an error is the project is not found', async () => {
+      const invalidProjectId = -1;
+
+      const response = await request(app).get(`/api/v1/projects/${invalidProjectId}`)
+
+      expect(response.status).toBe(404)
+      expect(response.body.error).toEqual('Could not find matching project!')
     });
   });
 
