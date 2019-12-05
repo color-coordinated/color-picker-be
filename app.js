@@ -109,4 +109,37 @@ app.delete('/api/v1/palettes/:palette_name', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
+app.patch('/api/v1/projects/:name', (request, response) => {
+  const { name } = request.params;
+  database('projects').where({ name })
+    .then((project) => {
+      if (!project.length) {
+        return response.status(404).json({ error: `No existing project with name of ${name}` });
+      }
+      database('projects').where({ name }).update({
+        name: request.body.name,
+      })
+        .then(() => response.status(202).json({ message: `Project name changed to ${request.body.name}` }));
+    })
+    .catch((error) => response.status(500).json({ error }));
+});
+
+app.patch('/api/v1/palettes/:palette_name', async (request, response) => {
+  const { palette_name } = request.params;
+  const selectedPalette = await database('palettes').where('palette_name', palette_name).select();
+  const doesExist = selectedPalette.length ? true : false;
+  if (!doesExist) {
+    return response.status(404).json({ error: `No existing palette with name of ${palette_name}` });
+  }
+  for (const possibleParameter of ['color_1', 'color_2', 'color_3', 'color_4', 'color_5']) {
+    if (request.body[possibleParameter] && doesExist) {
+      database('palettes').where({ palette_name }).update({
+        [possibleParameter]: request.body[possibleParameter],
+      })
+        .then(() => response.status(202).json({ message: 'Color updated' }))
+        .catch((error) => response.status(500).json({ error }));
+    }
+  }
+});
+
 export default app;
