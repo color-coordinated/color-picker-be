@@ -163,32 +163,40 @@ describe('Server', () => {
 
   describe('PATCH /api/v1/projects/:name', () => {
     it('should return a 202 status and update the item', async () => {
-      const newName = { name: 'hi'}
-      const originalProject = await database('projects').where({ name: 'Super dope project'}).first()
-      expect(originalProject.name).toEqual('Super dope project')
-      const update = await request(app).patch(`/api/v1/projects/${originalProject.name}`).send(newName)
-      const updatedProject = await database('projects').where({name: 'hi'}).first()
-      expect(updatedProject.name).toEqual('hi')
-      expect(update.status).toBe(202)
-      expect(update.body.message).toEqual('Project name changed to hi')
-    })
-  })
+      const newName = { name: 'hi' };
+      const originalProject = await database('projects').where({ name: 'Super dope project' }).first();
+      expect(originalProject.name).toEqual('Super dope project');
+      const update = await request(app).patch(`/api/v1/projects/${originalProject.name}`).send(newName);
+      const updatedProject = await database('projects').where({ name: 'hi' }).first();
+      expect(updatedProject.name).toEqual('hi');
+      expect(update.status).toBe(202);
+      expect(update.body.message).toEqual('Project name changed to hi');
+    });
+    it('should return status 404 and error if not found', async() => {
+      const expected = 'No existing project with name of invalid';
+      const response = await request(app).patch('/api/v1/projects/invalid');
+      expect(response.body.error).toEqual(expected);
+      expect(response.status).toBe(404);
+    });
+  });
 
 
   describe('PATCH /api/v1/palettes/:palette_name', () => {
     it('should return a 202 status and update the color', async () => {
-      const newColor = { color_2: '#bbbbbb'}
-      const originalPalette = await database('palettes').where({ palette_name: 'super dope palette'}).first()
-      console.log('orig', originalPalette)
-      expect(originalPalette.palette_name).toEqual('super dope palette')
-      const update = await request(app).patch(`/api/v1/palettes/${originalPalette.palette_name}`).send(newColor)
-      // console.log('update', update)
-      const updatedPalette = await database('palettes').where({palette_name: 'super dope palette'}).first()
-      console.log('updated palette', updatedPalette)
-      console.log('color', updatedPalette.color_2)
-      expect(updatedPalette.color_2).toEqual('#bbbbbb')
-      // expect(update.status).toBe(202)
-      // expect(update.body.message).toEqual('Color updated')
-    })
-  })
+      const newColor = { color_2: '#bbbbbb' };
+      const originalPalette = await database('palettes').where({ palette_name: 'super dope palette' }).first();
+      expect(originalPalette.palette_name).toEqual('super dope palette');
+      const update = await request(app).patch(`/api/v1/palettes/${originalPalette.palette_name}`).send(newColor);
+      const updatedPalette = await database('palettes').where({ palette_name: 'super dope palette' }).first();
+      expect(updatedPalette.color_2).toEqual('#bbbbbb');
+      expect(update.status).toBe(202);
+      expect(update.body.message).toEqual('Color updated');
+    });
+    it('should return 404 and error msg if not found', async () => {
+      const expected = 'No existing palette with name of invalid';
+      const response = await request(app).patch('/api/v1/palettes/invalid');
+      expect(response.status).toBe(404);
+      expect(response.body.error).toEqual(expected);
+    });
+  });
 });
