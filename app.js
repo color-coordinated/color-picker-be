@@ -42,15 +42,15 @@ app.get('/api/v1/projects/:id', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.get('/api/v1/palettes/:palette_name', (req, resp) => {
-  const { palette_name } = req.params;
+app.get('/api/v1/palettes/:id', (req, resp) => {
+  const { id } = req.params;
   database('palettes')
-    .where({ palette_name })
+    .where({ id })
     .then((palette) => {
       if (palette.length) {
         resp.status(200).json(palette[0]);
       } else {
-        resp.status(404).json({ error: `Could not find palette with name ${palette_name}` });
+        resp.status(404).json({ error: `Could not find matching palette!` });
       }
     })
     .catch((err) => resp.status(500).json({ err }));
