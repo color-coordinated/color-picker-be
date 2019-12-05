@@ -72,21 +72,15 @@ describe('Server', () => {
 
       expect(response.status).toBe(200)
       expect(palette.name).toEqual(expectedPalette.name)
-
-      // const palette_name = 'super dope palette';
-      // const expectedPalette = await database('palettes').where({ palette_name }).first();
-      // const resp = await request(app).get(`/api/v1/palettes/${palette_name}`);
-      // const palette = resp.body;
-      // expect(resp.status).toBe(200);
-      // expect(palette).toEqual(expectedPalette);
     });
-    it.skip('should return status 404 is palette is not found and a message', async () => {
-      const expected = { error: 'Could not find palette with name invalid palette' };
-      const invalidPalette = 'invalid palette';
-      const resp = await request(app).get(`/api/v1/palettes/${invalidPalette}`);
-      const error = resp.body;
-      expect(resp.status).toBe(404);
-      expect(error).toEqual(expected);
+    it('should return status 404 is palette is not found and a message', async () => {
+
+      const invalidId = -1;
+
+      const response = await request(app).get(`/api/v1/palettes/${invalidId}`)
+
+      expect(response.status).toBe(404)
+      expect(response.body.error).toEqual('Could not find matching palette!')
     });
   });
 
