@@ -136,6 +136,7 @@ app.patch('/api/v1/palettes/:palette_name', async (request, response) => {
   }
   for (let possibleParameter of ['color_1', 'color_2', 'color_3', 'color_4', 'color_5'] ) {
     if (request.body[possibleParameter] && doesExist ) {
+      console.log('param', possibleParameter)
       database('palettes').where({ palette_name }).update({
         [possibleParameter]: request.body[possibleParameter]
       })

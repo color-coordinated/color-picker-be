@@ -173,4 +173,22 @@ describe('Server', () => {
       expect(update.body.message).toEqual('Project name changed to hi')
     })
   })
+
+
+  describe('PATCH /api/v1/palettes/:palette_name', () => {
+    it('should return a 202 status and update the color', async () => {
+      const newColor = { color_2: '#bbbbbb'}
+      const originalPalette = await database('palettes').where({ palette_name: 'super dope palette'}).first()
+      console.log('orig', originalPalette)
+      expect(originalPalette.palette_name).toEqual('super dope palette')
+      const update = await request(app).patch(`/api/v1/palettes/${originalPalette.name}`).send(newColor)
+      // console.log('update', update)
+      const updatedPalette = await database('palettes').where({palette_name: 'super dope palette'}).first()
+      console.log('updated palette', updatedPalette)
+      console.log('color', updatedPalette.color_2)
+      expect(updatedPalette.color_2).toEqual('#bbbbbb')
+      // expect(update.status).toBe(202)
+      // expect(update.body.message).toEqual('Color updated')
+    })
+  })
 });
