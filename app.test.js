@@ -97,7 +97,7 @@ describe('Server', () => {
       expect(response.status).toBe(201);
       expect(project.name).toEqual(newProject.name);
     });
-    it.skip('should return status 422 and a helpful error msg if missing info', async () => {
+    it('should return status 422 and a helpful error msg if missing info', async () => {
       const invalidProject = { color: 'red' };
       const expectedResponse = { error: 'Expected format { name: <string> }, missing name!' };
       const response = await request(app).post('/api/v1/projects').send(invalidProject);
@@ -106,7 +106,7 @@ describe('Server', () => {
   });
 
   describe('POST /api/v1/palettes', () => {
-    it.skip('should return a status of 201 and insert new palette into table', async () => {
+    it('should return a status of 201 and insert new palette into table', async () => {
       const newPalette = {
         palette_name: 'test palette',
         project_id: 1,
@@ -123,7 +123,7 @@ describe('Server', () => {
       expect(project.palette_name).toEqual(newPalette.palette_name);
     });
 
-    it.skip('should return status 422 and a helpful error msg', async () => {
+    it('should return status 422 and a helpful error msg', async () => {
       const invalidPalette = {
         palette_name: 'test palette',
         project_id: 1,
