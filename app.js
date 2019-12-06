@@ -109,17 +109,17 @@ app.delete('/api/v1/palettes/:id', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.patch('/api/v1/projects/:name', (request, response) => {
-  const { name } = request.params;
-  database('projects').where({ name })
+app.patch('/api/v1/projects/:id', (request, response) => {
+  const { id } = request.params;
+  database('projects').where({ id })
     .then((project) => {
       if (!project.length) {
-        return response.status(404).json({ error: `No existing project with name of ${name}` });
+        return response.status(404).json({ error: `No existing matching project` });
       }
-      database('projects').where({ name }).update({
+      database('projects').where({ id }).update({
         name: request.body.name,
       })
-        .then(() => response.status(202).json({ message: `Project name changed to ${request.body.name}` }));
+        .then(() => response.status(202).json({ message: `Project name changed to "${request.body.name}"` }));
     })
     .catch((error) => response.status(500).json({ error }));
 });
