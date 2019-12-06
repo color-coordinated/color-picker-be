@@ -91,12 +91,12 @@ app.post('/api/v1/palettes', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.delete('/api/v1/projects/:name', (req, resp) => {
-  const { name } = req.params;
+app.delete('/api/v1/projects/:id', (req, resp) => {
+  const { id } = req.params;
   database('projects')
-    .where({ name })
+    .where({ id })
     .del()
-    .then(() => resp.status(202).json({ message: `Successfully deleted ${name}` }))
+    .then(() => resp.status(202).json({ message: `Successfully deleted project` }))
     .catch((err) => resp.status(500).json({ err }));
 });
 
