@@ -188,16 +188,15 @@ describe('Server', () => {
   });
 
 
-  describe('PATCH /api/v1/palettes/:id', () => {
+  describe('PATCH /api/v1/palettes/:palette_name', () => {
     it('should return a 202 status and update the color', async () => {
       const newColor = { color_2: '#bbbbbb' };
-      const paletteId = 5693
-      console.log('hi')
-      const originalPalette = await database('palettes').where({ id: 5884 }).first();
-      console.log('orig', originalPalette)
-      expect(originalPalette.palette_name).toEqual('super dope palette');
-      const update = await request(app).patch(`/api/v1/palettes/5884`).send(newColor);
-      const updatedPalette = await database('palettes').where({ id: 5884 }).first();
+      const id = 5924
+      const originalPalette = await database('palettes').where({ id: 5924 }).first();
+      console.log('original', originalPalette)
+      expect(originalPalette.palette_name).toEqual('super palette');
+      const update = await request(app).patch(`/api/v1/palettes/${id}`).send(newColor);
+      const updatedPalette = await database('palettes').where({ id: 5924 }).first();
       expect(updatedPalette.color_2).toEqual('#bbbbbb');
       expect(update.status).toBe(202);
       expect(update.body.message).toEqual('Palette updated successfully');
