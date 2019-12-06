@@ -81,7 +81,7 @@ describe('Server', () => {
   describe('POST /api/v1/projects', () => {
     it('should return status 201 and insert a new project', async () => {
       const newProject = { name: 'Cool new project' };
-      await database('projects').where('name', newProject.name).del();
+      await database('projects').where({name: 'Cool new project'}).del();
       const response = await request(app).post('/api/v1/projects').send(newProject);
       const project = await database('projects').where('name', 'Cool new project').first();
       expect(response.status).toBe(201);
