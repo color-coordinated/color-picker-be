@@ -1,5 +1,6 @@
 module.exports = [
   {
+    id: 1,
     project_id: 1,
     palette_name: 'super dope palette',
     color_1: '#000000',
@@ -9,6 +10,7 @@ module.exports = [
     color_5:  '#1d1d1d'
   },
   {
+    id: 2,
     project_id: 1,
     palette_name: 'super sad palette',
     color_1: '#999999',
@@ -18,6 +20,7 @@ module.exports = [
     color_5: '#1a1a1a'
   },
   {
+    id: 3,
     project_id: 1,
     palette_name: 'super palette',
     color_1: '##3449de',
