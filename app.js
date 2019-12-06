@@ -145,4 +145,4 @@ app.patch('/api/v1/palettes/:palette_name', async (request, response) => {
   }
 });
 
-export default app;
+module.exports = app
