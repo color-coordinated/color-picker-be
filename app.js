@@ -124,19 +124,19 @@ app.patch('/api/v1/projects/:id', (request, response) => {
     .catch((error) => response.status(500).json({ error }));
 });
 
-app.patch('/api/v1/palettes/:palette_name', async (request, response) => {
-  const { palette_name } = request.params;
-  const selectedPalette = await database('palettes').where('palette_name', palette_name).select();
+app.patch('/api/v1/palettes/:id', async (request, response) => {
+  const { id } = request.params;
+  const selectedPalette = await database('palettes').where('id', id).select();
   const doesExist = selectedPalette.length ? true : false;
   if (!doesExist) {
-    return response.status(404).json({ error: `No existing palette with name of ${palette_name}` });
+    return response.status(404).json({ error: `No matching palette found` });
   }
-  for (const possibleParameter of ['color_1', 'color_2', 'color_3', 'color_4', 'color_5']) {
+  for (const possibleParameter of ['color_1', 'color_2', 'color_3', 'color_4', 'color_5', 'palette_name']) {
     if (request.body[possibleParameter] && doesExist) {
-      database('palettes').where({ palette_name }).update({
+      database('palettes').where({ id }).update({
         [possibleParameter]: request.body[possibleParameter],
       })
-        .then(() => response.status(202).json({ message: 'Color updated' }))
+        .then(() => response.status(202).json({ message: `Palette updated successfully`}))
         .catch((error) => response.status(500).json({ error }));
     }
   }
