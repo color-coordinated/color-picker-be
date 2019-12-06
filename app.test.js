@@ -142,11 +142,12 @@ describe('Server', () => {
     });
   });
 
-  describe('DELETE /api/v1/projects/:name', () => {
-    it.skip('should return status 202 and delete the project', async () => {
-      const response = await request(app).delete('/api/v1/projects/Cool new project');
-      const expected = { message: 'Successfully deleted Cool new project' };
-      const project = await database('projects').where({ name: 'Cool new project' });
+  describe('DELETE /api/v1/projects/:id', () => {
+    it('should return status 202 and delete the project', async () => {
+      const id = 1
+      const response = await request(app).delete(`/api/v1/projects/${id}`);
+      const expected = { message: 'Successfully deleted project' };
+      const project = await database('projects').where({ id: 1 });
       expect(response.body).toEqual(expected);
       expect(project).toEqual([]);
     });
