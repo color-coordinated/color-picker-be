@@ -1,6 +1,10 @@
-import '@babel/polyfill';
-import request from 'supertest';
-import app from './app';
+// import '@babel/polyfill';
+// import request from 'supertest';
+// import app from './app';
+
+const app = require('./app')
+
+const request = require('supertest')
 
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
