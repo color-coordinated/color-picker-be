@@ -100,12 +100,12 @@ app.delete('/api/v1/projects/:id', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.delete('/api/v1/palettes/:palette_name', (req, resp) => {
-  const { palette_name } = req.params;
+app.delete('/api/v1/palettes/:id', (req, resp) => {
+  const { id } = req.params;
   database('palettes')
-    .where({ palette_name })
+    .where({ id })
     .del()
-    .then(() => resp.status(202).json({ message: `Successfully deleted palette ${palette_name}` }))
+    .then(() => resp.status(202).json({ message: `Palette successfully deleted` }))
     .catch((err) => resp.status(500).json({ err }));
 });
 

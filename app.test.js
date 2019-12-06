@@ -149,22 +149,35 @@ describe('Server', () => {
     });
   });
 
-  describe('DELETE /api/v1/palettes/:palette_name', () => {
-    it.skip('should return status 202 and delete the item', async () => {
-      const response = await request(app).delete('/api/v1/palettes/super dope palette');
-      const expected = { message: 'Successfully deleted palette super dope palette' };
-      const palette = await database('palettes').where({ palette_name: 'super dope palette' });
-      expect(response.body).toEqual(expected);
-      expect(palette).toEqual([]);
-      await database('palettes').insert({
-        palette_name: 'super dope palette',
-        project_id: 1,
-        color_1: '#000000',
-        color_2: '#FFFFFF',
-        color_3: '#CCCCCC',
-        color_4: '#1f1f1f',
-        color_5: '#1d1d1d',
-      });
+  describe('DELETE /api/v1/palettes/:id', () => {
+    it('should return status 202 and delete the item', async () => {
+      const id = 1;
+      const response = await request(app).delete(`/api/v1/palettes/${id}`)
+      const expected = { message: 'Palette successfully deleted'}
+      const palette = await database('palettes').where({ id: 1 })
+
+      expect(response.status).toBe(202)
+      
+      expect(response.body).toEqual(expected)
+
+
+
+
+
+      // const response = await request(app).delete('/api/v1/palettes/super dope palette');
+      // const expected = { message: 'Successfully deleted palette super dope palette' };
+      // const palette = await database('palettes').where({ palette_name: 'super dope palette' });
+      // expect(response.body).toEqual(expected);
+      // expect(palette).toEqual([]);
+      // await database('palettes').insert({
+      //   palette_name: 'super dope palette',
+      //   project_id: 1,
+      //   color_1: '#000000',
+      //   color_2: '#FFFFFF',
+      //   color_3: '#CCCCCC',
+      //   color_4: '#1f1f1f',
+      //   color_5: '#1d1d1d',
+      // });
     });
   });
 
