@@ -174,9 +174,10 @@ describe('Server', () => {
       expect(update.status).toBe(202);
       expect(update.body.message).toEqual(`Project name changed to "hi"`);
     });
-    it.skip('should return status 404 and error if not found', async() => {
-      const expected = 'No existing project with name of invalid';
-      const response = await request(app).patch('/api/v1/projects/invalid');
+    it('should return status 404 and error if not found', async() => {
+      const invalidId = -1
+      const expected = 'No existing matching project';
+      const response = await request(app).patch(`/api/v1/projects/${invalidId}`);
       expect(response.body.error).toEqual(expected);
       expect(response.status).toBe(404);
     });
