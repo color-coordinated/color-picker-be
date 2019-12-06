@@ -5,3 +5,4 @@ services:
   - postgresql
 before_script:
   - psql -c 'CREATE DATABASE color_picker_db_test;' -U postgres
+  - knex migrate:latest --env=test
