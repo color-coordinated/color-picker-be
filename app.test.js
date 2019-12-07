@@ -16,7 +16,7 @@ describe('Server', () => {
   });
 
   describe('init', () => {
-    it.skip('should return a 200 status', async () => {
+    it('should return a 200 status', async () => {
       const res = await request(app).get('/');
       expect(res.status).toBe(200);
       expect(res.text).toEqual('Welcome to Color Picker API');
@@ -24,7 +24,7 @@ describe('Server', () => {
   });
 
   describe('GET /api/v1/projects', () => {
-    it.skip('should return status 200 and all projects', async () => {
+    it('should return status 200 and all projects', async () => {
       let expectedProjects = await database('projects').select();
       const resp = await request(app).get('/api/v1/projects');
       const projects = await resp.body;
@@ -35,7 +35,7 @@ describe('Server', () => {
   });
 
   describe('GET /api/v1/palettes', () => {
-    it.skip('should return all of the palettes with status 200', async () => {
+    it('should return all of the palettes with status 200', async () => {
       const expectedPalettes = await database('palettes').select();
       const resp = await request(app).get('/api/v1/palettes');
       const palettes = await resp.body;
