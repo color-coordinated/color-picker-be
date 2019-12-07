@@ -31,29 +31,29 @@ app.get('/api/v1/palettes', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.get('/api/v1/projects/:name', (req, resp) => {
-  const { name } = req.params;
+app.get('/api/v1/projects/:id', (req, resp) => {
+  const { id } = req.params;
   database('projects')
-    .where({ name })
+    .where({ id })
     .then((project) => {
       if (project.length) {
         resp.status(200).json(project[0]);
       } else {
-        resp.status(404).json({ error: `Could not find project named ${name}!` });
+        resp.status(404).json({ error: `Could not find matching project!` });
       }
     })
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.get('/api/v1/palettes/:palette_name', (req, resp) => {
-  const { palette_name } = req.params;
+app.get('/api/v1/palettes/:id', (req, resp) => {
+  const { id } = req.params;
   database('palettes')
-    .where({ palette_name })
+    .where({ id })
     .then((palette) => {
       if (palette.length) {
         resp.status(200).json(palette[0]);
       } else {
-        resp.status(404).json({ error: `Could not find palette with name ${palette_name}` });
+        resp.status(404).json({ error: `Could not find matching palette!` });
       }
     })
     .catch((err) => resp.status(500).json({ err }));
@@ -94,52 +94,52 @@ app.post('/api/v1/palettes', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.delete('/api/v1/projects/:name', (req, resp) => {
-  const { name } = req.params;
+app.delete('/api/v1/projects/:id', (req, resp) => {
+  const { id } = req.params;
   database('projects')
-    .where({ name })
+    .where({ id })
     .del()
-    .then(() => resp.status(202).json({ message: `Successfully deleted ${name}` }))
+    .then(() => resp.status(202).json({ message: `Successfully deleted project` }))
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.delete('/api/v1/palettes/:palette_name', (req, resp) => {
-  const { palette_name } = req.params;
+app.delete('/api/v1/palettes/:id', (req, resp) => {
+  const { id } = req.params;
   database('palettes')
-    .where({ palette_name })
+    .where({ id })
     .del()
-    .then(() => resp.status(202).json({ message: `Successfully deleted palette ${palette_name}` }))
+    .then(() => resp.status(202).json({ message: `Palette successfully deleted` }))
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.patch('/api/v1/projects/:name', (request, response) => {
-  const { name } = request.params;
-  database('projects').where({ name })
+app.patch('/api/v1/projects/:id', (request, response) => {
+  const { id } = request.params;
+  database('projects').where({ id })
     .then((project) => {
       if (!project.length) {
-        return response.status(404).json({ error: `No existing project with name of ${name}` });
+        return response.status(404).json({ error: `No existing matching project` });
       }
-      database('projects').where({ name }).update({
+      database('projects').where({ id }).update({
         name: request.body.name,
       })
-        .then(() => response.status(202).json({ message: `Project name changed to ${request.body.name}` }));
+        .then(() => response.status(202).json({ message: `Project name changed to "${request.body.name}"` }));
     })
     .catch((error) => response.status(500).json({ error }));
 });
 
-app.patch('/api/v1/palettes/:palette_name', async (request, response) => {
-  const { palette_name } = request.params;
-  const selectedPalette = await database('palettes').where('palette_name', palette_name).select();
+app.patch('/api/v1/palettes/:id', async (request, response) => {
+  const { id } = request.params;
+  const selectedPalette = await database('palettes').where('id', id).select();
   const doesExist = selectedPalette.length ? true : false;
   if (!doesExist) {
-    return response.status(404).json({ error: `No existing palette with name of ${palette_name}` });
+    return response.status(404).json({ error: `No matching palette found` });
   }
-  for (const possibleParameter of ['color_1', 'color_2', 'color_3', 'color_4', 'color_5']) {
+  for (const possibleParameter of ['color_1', 'color_2', 'color_3', 'color_4', 'color_5', 'palette_name']) {
     if (request.body[possibleParameter] && doesExist) {
-      database('palettes').where({ palette_name }).update({
+      database('palettes').where({ id }).update({
         [possibleParameter]: request.body[possibleParameter],
       })
-        .then(() => response.status(202).json({ message: 'Color updated' }))
+        .then(() => response.status(202).json({ message: `Palette updated successfully`}))
         .catch((error) => response.status(500).json({ error }));
     }
   }
