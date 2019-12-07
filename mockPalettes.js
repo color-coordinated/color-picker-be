@@ -7,7 +7,7 @@ module.exports = [
     color_2: '#ffffff',
     color_3: '#1e1e1e',
     color_4: '#1f1f1f',
-    color_5:  '#1d1d1d'
+    color_5: '#1d1d1d',
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ module.exports = [
     color_2: '#1c1c1c',
     color_3: '#1d1d1d',
     color_4: '#1f1f1f',
-    color_5: '#1a1a1a'
+    color_5: '#1a1a1a',
   },
   {
     id: 3,
@@ -27,7 +27,6 @@ module.exports = [
     color_2: '#0f0ed5',
     color_3: '#bafe05',
     color_4: '#5d683f',
-    color_5: '#fa477b'
-  }
-]
-
+    color_5: '#fa477b',
+  },
+];
