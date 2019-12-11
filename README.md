@@ -6,7 +6,7 @@
 
 ### Base URL
 
-//Add base URL here once deployed
+All endpoints should be prepended with: http://color-picker-backend.herokuapp.com/
 
 ### GET all projects
 
@@ -101,9 +101,9 @@ Example Response:
 ```
 
 
-### GET a specific project by name
+### GET a specific project
 
-`GET /api/v1/projects/:name`
+`GET /api/v1/projects/:id`
 
 
 | Status  | Response |
@@ -122,9 +122,9 @@ Example response:
 
 
 
-### GET a specific palette by name
+### GET a specific palette 
 
-`GET /api/v1/palette/:palette_name`
+`GET /api/v1/palette/:id`
 
 
 | Status  | Response |
@@ -196,7 +196,7 @@ Example response:
 
 ### DELETE an existing project
 
-`DELETE /api/v1/projects/:name`
+`DELETE /api/v1/projects/:id`
 
 
 | Status  | Response |
@@ -206,7 +206,7 @@ Example response:
 
 ### PATCH an existing project
 
-`PATCH /api/v1/projects/:name`
+`PATCH /api/v1/projects/:id`
 
 #### Required Parameters
 
@@ -222,7 +222,7 @@ Example response:
 
 ### PATCH an existing palette
 
-`PATCH /api/v1/projects/:palette_name`
+`PATCH /api/v1/projects/:id`
 
 #### Required Parameters
 
