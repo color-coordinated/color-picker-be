@@ -59,7 +59,7 @@ app.get('/api/v1/palettes/:id', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.post('/api/v1/projects', (req, resp) => {
+app.post('/api/v1/projects', cors(), (req, resp) => {
   const receivedData = req.body;
   if (!receivedData.name) {
     return resp.status(422).json({ error: `Expected format { name: <string> }, missing name!` });
@@ -78,8 +78,9 @@ app.post('/api/v1/projects', (req, resp) => {
     .catch((err) => resp.status(500).json({ err }));
 });
 
-app.post('/api/v1/palettes', (req, resp) => {
+app.post('/api/v1/palettes', cors(), (req, resp) => {
   const receivedData = req.body;
+  console.log('hi')
   for (const requiredParam of ['project_id', 'palette_name', 'color_1', 'color_2', 'color_3', 'color_4', 'color_5']) {
     if (!receivedData[requiredParam]) {
       return resp.status(422).json({
