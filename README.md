@@ -1,6 +1,12 @@
 # Color Picker API
 
+## How to Get Started
 
+Clone down this repo
+
+Run `npm i` to install all the dependencies
+
+Run `npm start` to get the server going on your machine
 
 ## Endpoints
 
@@ -204,6 +210,16 @@ Example response:
 | 201 (success)  | 'Successfully deleted' |
 
 
+### DELETE an existing palette
+
+`DELETE /api/v1/palettes/:id`
+
+
+| Status  | Response |
+| ------------- | ------------- |
+| 201 (success)  | 'Successfully deleted' |
+
+
 ### PATCH an existing project
 
 `PATCH /api/v1/projects/:id`
@@ -243,4 +259,8 @@ Example response:
 | 202 (success)  | 'Palette successfully updated' |
 | 404(error)  | message indicating that matching palette could not be found to update |
 
+
+## Storyboard
+
+[Storyboard here](https://github.com/orgs/color-coordinated/projects/1)
 
